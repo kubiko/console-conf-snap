@@ -10,6 +10,37 @@ grade: stable
 confinement: strict
 adopt-info: subiquity
 
+environment:
+  PATH: $SNAP/usr/bin:$SNAP/usr/sbin:$PATH
+  PYTHONHOME: $SNAP/usr
+  PYTHON: $SNAP/usr/bin/python3
+  PYTHONPATH: $SNAP/usr/share/subiquity:$SNAP/usr/lib/python3/dist-packages:$SNAP/usr/lib/python3.10
+  PYTHONIOENCODING: utf-8
+  SUBIQUITY_ROOT: $SNAP
+  SNAP_CONFINEMENT: "strict"
+
+apps:
+  console-conf:
+    command: usr/bin/python3 $SNAP/usr/share/subiquity/console-conf-tui
+    plugs:
+      - console-conf
+      - hardware-observe
+      - network
+      - network-control
+      - network-observe
+      - network-setup-control
+      - snapd-control
+
+  wait:
+    command: usr/share/subiquity/console-conf-wait
+
+  write-login-details:
+    command: usr/bin/python3 $SNAP/usr/share/subiquity/console-conf-write-login-details
+    plugs:
+      - console-conf
+      - network-control
+      - snapd-control
+
 parts:
   probert:
     plugin: nil
